@@ -19,11 +19,6 @@ module STACK_MODULE
         module procedure :: is_empty_integer_stack
     end interface
 
-    interface initiate
-        module procedure :: initiate_character_stack
-        module procedure :: initiate_integer_stack
-    end interface
-
     interface push
         module procedure :: push_character_stack
         module procedure :: push_integer_stack
@@ -34,14 +29,18 @@ module STACK_MODULE
         module procedure :: pop_integer_stack
     end interface
 
+    ! interface to_string
+    !     module procedure :: to_string_character_stack
+    !     module procedure :: to_string_integer_stack
+    ! end interface
+
     type :: character_stack
-        integer :: top
-        integer :: max_size = 256
+        integer :: top = 0
         character, dimension(256) :: items_array
     end type
 
     type :: integer_stack
-        integer :: top
+        integer :: top = 0
         integer, dimension(256) :: items_array
     end type
 
@@ -58,16 +57,6 @@ contains
         type(integer_stack) :: argstack
         retval = argstack%top .eq. 0
     end function is_empty_integer_stack
-
-    subroutine initiate_character_stack(argstack)
-        type(character_stack) :: argstack
-        argstack%top = 0
-    end subroutine initiate_character_stack
-
-    subroutine initiate_integer_stack(argstack)
-        type(integer_stack) :: argstack
-        argstack%top = 0
-    end subroutine initiate_integer_stack
 
     subroutine push_character_stack(argstack, item)
         type(character_stack) :: argstack
