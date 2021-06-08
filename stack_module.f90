@@ -7,7 +7,7 @@
 ! AUTHOR:
 !>  20205178 Park Hyun (Sophomore)
 !
-! DESCRIPTION: 
+! DESCRIPTION:
 !>  implement of stack in FORTRAN.
 !------------------------------------------------------------------------------
 
@@ -19,6 +19,11 @@ module STACK_MODULE
         module procedure :: is_empty_integer_stack
     end interface
 
+    interface initiate
+        module procedure :: initiate_character_stack
+        module procedure :: initiate_integer_stack
+    end interface
+
     interface push
         module procedure :: push_character_stack
         module procedure :: push_integer_stack
@@ -27,6 +32,11 @@ module STACK_MODULE
     interface pop
         module procedure :: pop_character_stack
         module procedure :: pop_integer_stack
+    end interface
+
+    interface remove
+        module procedure :: remove_character_stack
+        module procedure :: remove_integer_stack
     end interface
 
     ! interface to_string
@@ -44,8 +54,17 @@ module STACK_MODULE
         integer, dimension(256) :: items_array
     end type
 
-
 contains
+    subroutine initiate_character_stack(argstack)
+        type(character_stack) :: argstack
+        argstack%top = 0
+    end subroutine initiate_character_stack
+
+    subroutine initiate_integer_stack(argstack)
+        type(integer_stack) :: argstack
+        argstack%top = 0
+    end subroutine initiate_integer_stack
+
     logical function is_empty_character_stack(argstack) result(retval)
         implicit none
         type(character_stack) :: argstack
@@ -95,4 +114,24 @@ contains
         retval = argstack%items_array(argstack%top)
         argstack%top = argstack%top - 1
     end function
+
+    subroutine remove_character_stack(argstack, error)
+        type(character_stack) :: argstack
+        logical :: error
+        if (is_empty(argstack)) then
+            error = .TRUE.
+            return
+        end if
+        argstack%top = argstack%top - 1
+    end subroutine remove_character_stack
+
+    subroutine remove_integer_stack(argstack, error)
+        type(integer_stack) :: argstack
+        logical :: error
+        if (is_empty(argstack)) then
+            error = .TRUE.
+            return
+        end if
+        argstack%top = argstack%top - 1
+    end subroutine remove_integer_stack
 end module STACK_MODULE
